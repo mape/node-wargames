@@ -1,6 +1,7 @@
 # node-wargames
 
 Visualization of an IRC channel in a wargame theme.
+<img src = "http://mape.me/wargamez.png" border = "0"/>
 
 ## Get it working
 
@@ -34,3 +35,6 @@ You need to alter the path in jquery.wargames.js to your new wargames server.
 ### To enable persistant storage
 
 If you want persistant storage create a cache.json file and set the correct path in the app settings.
+
+
+http://mape.me/wargames.png
