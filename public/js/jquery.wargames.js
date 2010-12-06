@@ -1,3 +1,5 @@
+WEB_SOCKET_SWF_LOCATION = '/swf/WebSocketMain.swf';
+
 (function () {
 	if (!window.WebSocket) {
 		$('body').empty();
@@ -6,8 +8,6 @@
 
 	setTimeout(function () {
 		new ircMap({
-			server: 'ws://yourdomain.td:1337',
-			map: '#map',
 			bowArcHeight: 200, // px
 			bowArcHeightVsDistance: 400 // px
 		});
@@ -21,7 +21,7 @@
 		var removeTimeout;
 		var users = {};
 		var markers = {};
-		var $map = $(options.map);
+		var $map = $('#map');
 		var mapNewWidth = $map.width() * 0.9;
 		var mapNewHeight = mapNewWidth * 0.9;
 		var mapHeight = $map.height(mapNewHeight).height();
@@ -34,8 +34,9 @@
 
 		var map = Raphael($('#map-canvas').get(0), mapWidth, mapHeight);
 		map.canvas.setAttribute('viewBox', '0 0 567 369');
-		var mapSourceDiffX = (567 / $('svg').width());
-		var mapSourceDiffY = (369 / $('svg').height());
+
+		var mapSourceDiffX = (567 / $('#map').width());
+		var mapSourceDiffY = (369 / $('#map').height());
 
 		map.path(mapVector).attr({
 			stroke: "#333"
@@ -299,10 +300,19 @@
 		}
 
 		function initWebsocketConnection() {
-			var conn = new WebSocket(options.server);
-
-			conn.onmessage = function (evt) {
-				var data = JSON.parse(evt.data);
+			var server = new io.Socket(null, {
+				'port': '#socketIoPort#'
+				, 'rememberTransport': true
+				, 'transports': [
+					'websocket'
+					, 'flashsocket'
+					, 'htmlfile'
+					, 'xhr-multipart'
+					, 'xhr-polling'
+				]
+			}); 
+			server.on('message', function(msg) {
+				var data = JSON.parse(msg);
 				var lastActivityTimestamp;
 
 				switch (data.action) {
@@ -347,15 +357,13 @@
 				if (lastActivityTimestamp) {
 					updateChannelActivity(lastActivityTimestamp);
 				}
-			};
-
-			conn.onclose = function () {
+			});
+			server.on('disconnect', function() {
 				setTimeout(function () {
 					initWebsocketConnection();
 				}, 3000);
-			};
-
-			conn.onopen = function () {};
+			});
+			server.connect();
 		}
 		initWebsocketConnection();
 	}

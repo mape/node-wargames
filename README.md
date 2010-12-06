@@ -1,40 +1,21 @@
 # node-wargames
 
 Visualization of an IRC channel in a wargame theme.
+
 <img src = "http://mape.me/wargamez.png" border = "0"/>
 
 ## Get it working
 
 ### Dependencies
- * [node-websocket-server](http://github.com/miksago/node-websocket-server/)
- * [node-irc](http://github.com/martynsmith/node-irc/)
+* [request](https://github.com/mikeal/node-utils/tree/master/request/) (npm install request)
+* [socket.io](https://github.com/learnboost/socket.io-node/) (npm install socket.io)
+* [node-irc](http://github.com/martynsmith/node-irc/) (npm install irc)
 
-### Create your app
-Create an app.js file including the wargames module and enter your settings.
+### Create your war
+Change the port on line 43 in server.js
 
-    var Wargames = require('./lib/wargames');
-    
-    new Wargames({
-        websocketPort: 1337
-        , ircNetwork: 'irc.freenode.net'
-        , ircChannel: '#nodejs.bots'
-        , ircBotNick: 'MrWarGames'
-        , ircUserName: 'WargamesExample'
-        , ircRealName: 'WargamesExample'
-        , cachePath: './cache.json'
-    });
-
-### To get the web page working
-
-You need to alter the path in jquery.wargames.js to your new wargames server.
-
-    new ircMap({
-        server: 'ws://yourpage.td:1337'
-    });
+Alter the options at the bottom of server.js to decide what channel/network to join.
 
 ### To enable persistant storage
 
-If you want persistant storage create a cache.json file and set the correct path in the app settings.
-
-
-http://mape.me/wargames.png
+If you want persistant storage a cache path in the app settings.
