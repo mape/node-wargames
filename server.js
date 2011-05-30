@@ -51,7 +51,7 @@ app.configure(function() {
 app.configure(function() {
 	app.use(connect.logger({ format: ':req[x-real-ip]\t:status\t:method\t:url\t' }));
 	app.use(assets);
-	app.use(connect.staticProvider(__dirname + '/public'));
+	app.use(connect.static(__dirname + '/public'));
 });
 
 app.dynamicHelpers({
